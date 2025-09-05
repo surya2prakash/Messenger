@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messenger</title>
+</head>
+<body>
+       <div class="wrapper">
+               
+                <div class="roomContainer">
+                      <input type="text" placeholder="reciver ki id " id="join_input" />
+                      
+                </div>
+               <div class="sendMessage">
+                    <input type="text" placeholder="type message..." id="input_msg" />
+                    <button id="sendMsg">send</button>
+               </div>
+
+               <div class="chat" id="chat_log"></div>
+       </div>
+       <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+       <script src="./script.js" ></script>
+</body>
+</html>
