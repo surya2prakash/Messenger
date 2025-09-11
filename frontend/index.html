@@ -4,23 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messenger</title>
+     
+   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-       <div class="wrapper">
-               
-                <div class="roomContainer">
-                      <input type="text" placeholder="reciver ki id " id="join_input" />
-                      
-                </div>
-               <div class="sendMessage">
-                    <input type="text" placeholder="type message..." id="input_msg" />
-                    <button id="sendMsg">send</button>
-               </div>
+      <div class="wrapper">
 
-               <div class="chat" id="chat_log"></div>
-       </div>
-       <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+        <div class="logMain">
+               <form class="logContainer">
+                <input type="email" placeholder="email" id="logemail" autocomplete="useremail"/>
+                <input type="password" placeholder="password" id="logPass" autocomplete="current-password"/>
+                <button class="logbtn">Log In</button>
+               </form>
+               <button id="createAccountBtn" >Create Account</button>
+        </div>
+        <div class="signMain">
+             <form  class="signContainer">
+               <input type="text" placeholder="fullname" id="signName" autocomplete="username" />
+               <input type="email" placeholder="email" id="signEmail" autocomplete="useremail"/>
+               <input type="password" placeholder="password" id="signPass" autocomplete="current-password"/>
+                 <button class="signUpbtn">Sign Up</button>
+               </form>
+        </div>
 
-       <script src="./script.js" ></script>
+      </div>
+      <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+      <script src="script.js"> </script>
 </body>
 </html>
