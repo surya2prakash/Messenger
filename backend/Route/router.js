@@ -5,7 +5,7 @@ const router = express.Router();
 const {signUp} = require("../Controller/User/signUp");
 const {logIn} = require("../Controller/User/logIn")
 const {auth,isAdmin} = require("../Middleware/auth");
-const {getAllUsers} = require("../Controller/User/getUsers");
+const {getAllUsers,adduseringroup} = require("../Controller/User/getUsers");
 const {getprivateChat} = require("../Controller/chats/oneToOne");
 const  {addMember,groupCreate} = require("../Controller/GroupController/groupCreate")
 const {getAllChats}= require("../Controller/GroupController/groupChats");
@@ -24,6 +24,7 @@ router.get("/getuser",auth,getAllUsers);
 router.get("/message",auth,getprivateChat);
 
 router.post("/group",auth,groupCreate);
+router.get('/addUsers',auth,adduseringroup);
 router.post("/addMember",auth,isAdmin,addMember);
 router.get("/groupChat",auth,getAllChats);
 module.exports = router;
