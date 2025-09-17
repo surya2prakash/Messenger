@@ -4,29 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messenger</title>
-    <style>
-           .container{
-             display: grid;
-             grid-template-columns: 200px 1fr;
-           }
-          
-    </style>
+    <link rel="stylesheet" href="chatBox.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
 </head>
 <body>
      <div class="wrapper">
-           <nav>
-              <h2>Messenger</h2>
-               <button>Create Group</button>
-           </nav>
-           <main class="container">
-                <div class="side_bar">
-                   
-                </div>
-                <div class="main_page">
-                    
-                </div>
-           </main>
+          <!-- header section -->
 
+           <header class="header-section">
+              <h2>Messenger</h2>             
+              <button class="group-create-btn">
+                      <i class="fas fa-plus"></i> New Group
+              </button>
+           </header>
+
+           <div class="container">
+                   <!-- side bar for user list and Groups -->
+                   <aside class="side-section">
+                    <div class="side-bar">
+                      <input type="text" placeholder="search ..." />  
+                      </div>  
+                      <div class="show-group-list"></div>
+                      <div class="show-user-list"></div>
+                    </aside>
+          
+
+            <main class="main-page">
+
+                <section class="private-chat-section">                     
+                                   <!-- chats ko show krne ke liye -->
+                    <div class="message-container"></div>
+                        <!-- input field message krne ke liye -->
+                     <form class="private-message-form">
+                       <div class="input-group">
+                         <input type="text" placeholder="type message" autocomplete="current-message" id="private-msg-field"/>
+                         <button >send</button>
+                        </div>
+                     </form>
+              
+                </section>
+
+                <!-- create group section -->
+                <section class="adduser-group-section">
+                   
+                     <form class="group-create-form">
+                         <div class="input-group">
+                          <input type="text" placeholder="group name" autocomplete="groupname" id="group-name"/>
+                          <button>create Group</button>
+                          </div>
+                     </form>                    
+                
+                </section>
+                <!-- group chat section -->
+                <section class="group-chat-section">
+                    
+                    <button class="add-newuser-btn">
+                          <i class="fas fa-user-plus"></i> Add User</button>
+                         
+                        <div class="show-usersfor-add"></div>  
+
+                          <div class="main-box">
+                              <!-- show group messages -->
+                           <div class="show-group-message"></div>
+                           <!-- group message form -->
+                       <form class="group-msg-send-form">
+                         <div class="input-group">
+                         <input type="text" placeholder="type message" autocomplete="current-message" id="msg-group-input-field"/>
+                         <button >send</button>
+                         </div>
+                     </form>
+                     </div>
+                
+                </section>
+           </main>
+      </div>         
      </div>
      <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
      <script src="chatBox.js"> </script>
