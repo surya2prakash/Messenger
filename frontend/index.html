@@ -8,26 +8,54 @@
    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-      <div class="wrapper">
-
-        <div class="logMain">
-               <form class="logContainer">
-                <input type="email" placeholder="email" id="logemail" autocomplete="useremail"/>
-                <input type="password" placeholder="password" id="logPass" autocomplete="current-password"/>
-                <button class="logbtn">Log In</button>
+      <main class="wrapper">
+       <!-- login Section -->
+        <section class="login-section" >
+          <div class="main-box" >
+            <h2>Messenger</h2>
+          <!-- login form -->
+               <form class="login-form">
+                <div class="input-group">
+                <label for="login-email">Email</label>
+                <input type="email" placeholder="email" id="login-email" autocomplete="useremail"/>
+                </div>
+                <div class="input-group">
+                <label for="login-Pass" >Password</label>
+                <input type="password" placeholder="password" id="login-pass" autocomplete="current-password"/>
+                </div>
+                <button class="login-btn">Log In</button>
                </form>
-               <button id="createAccountBtn" >Create Account</button>
-        </div>
-        <div class="signMain">
-             <form  class="signContainer">
-               <input type="text" placeholder="fullname" id="signName" autocomplete="username" />
-               <input type="email" placeholder="email" id="signEmail" autocomplete="useremail"/>
-               <input type="password" placeholder="password" id="signPass" autocomplete="current-password"/>
-                 <button class="signUpbtn">Sign Up</button>
+             <p class="toggle-link">  
+                 Don`t have an account ? <button  id="show-sign-btn" >Create Account</button>
+               </p>
+               </div>
+        </section>
+      <!-- section Sign Up -->
+     <section class="sign-section"  >
+        <div class="main-box">
+           <h2>Create Account</h2>
+          <!-- Sign Up Form -->
+             <form  class="sign-form">
+              <div class="input-group">
+              <label for="signName">Full Name</label>
+               <input type="text" placeholder="fullname" id="sign-name" autocomplete="username" />
+               </div>
+               <div class="input-group">
+               <label for="signEmail">Email</label>
+               <input type="email" placeholder="email" id="sign-email" autocomplete="useremail"/>
+               </div>
+               <div class="input-group">
+               <label for="signPass">Password</label>
+               <input type="password" placeholder="password" id="sign-pass" autocomplete="current-password"/>
+               </div>
+                 <button class="sign-btn">Sign Up</button>
                </form>
+               <p class="toggle-link">
+                  Already have an account ? <button  class="show-log-btn">Log in</button>
+               </p>
         </div>
-
-      </div>
+         </section>  
+      </main>
       <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
       <script src="script.js"> </script>
 </body>
