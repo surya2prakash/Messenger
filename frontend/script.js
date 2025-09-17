@@ -1,34 +1,47 @@
+window.addEventListener("load",()=>{
+
 
 //signUp ------->
-const createAccount = document.querySelector("#createAccountBtn");
-const signMain = document.querySelector(".signMain");
-const signName = document.getElementById("signName");
-const signPass = document.getElementById("signPass");
-const signEmail = document.getElementById("signEmail");
-const signBtn = document.querySelector(".signUpbtn");
-const signform = document.querySelector(".signContainer");
 
+const signSection = document.querySelector(".sign-section");
+const signName = document.getElementById("sign-name");
+const signPass = document.getElementById("sign-pass");
+const signEmail = document.getElementById("sign-email");
+const signform = document.querySelector(".sign-form");
+
+// signUp Pe ho aur login page show krna hai -->
+const showLogBtn = document.querySelector(".show-log-btn");
 
 //logIn --------->
-const logMain = document.querySelector(".logMain");
-const logEmail = document.getElementById("logemail");
-const logPass = document.getElementById("logPass");
-const logBtn = document.querySelector(".logbtn");
-const logform = document.querySelector(".logContainer");
+const loginSection = document.querySelector(".login-section");
+const logEmail = document.getElementById("login-email");
+const logPass = document.getElementById("login-pass");
+const logform = document.querySelector(".login-form");
+//login pe ho aur btn click hone pe signUp page show krna hai --->
+const createAccount = document.querySelector("#show-sign-btn");
 
-      signMain.classList.add("active");
+  
+     signSection.classList.add("active");
+      
+
+    
 
 
- //socket.io ----------->
+
  
  
 
 //button pe click ho to signUp form show kr do ---->      
 createAccount.addEventListener("click",()=>{
-         signMain.classList.remove("active");
-         logMain.classList.add("active");
+       signSection.classList.remove("active");  
+        loginSection.classList.add("active");
          
 });
+
+showLogBtn.addEventListener("click",()=>{
+      signSection.classList.add("active");  
+        loginSection.classList.remove("active");
+})
 
 //signUp -- backend call 
 async function signUpbackend(data){
@@ -55,6 +68,8 @@ signform.addEventListener("submit",(event)=>{
     const email = signEmail.value.trim();
     const fullName = signName.value.trim();
     const password = signPass.value.trim();
+
+
 
     const data ={
          email:email,
@@ -101,7 +116,8 @@ logform.addEventListener("submit",(event)=>{
     
       const email = logEmail.value.trim();
       const password = logPass.value.trim();
-
+        
+      
       const data = {
            email:email,
            password:password
@@ -110,3 +126,4 @@ logform.addEventListener("submit",(event)=>{
       logInBackend(data);
 })
 
+})
