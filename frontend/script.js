@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       // ******API CALL************
        
       async function backendCall(method,path,{data}){
-          const url ="http://localhost:5000/api/v1" ;
+          const url ="https://messenger-axhs.onrender.com/api/v1" ;
 
              let options =   {
                    method:`${method}`,
