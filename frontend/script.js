@@ -144,6 +144,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             const result = await backendCall('POST',"/login",{data})
 
             if(result.success){
+                 localStorage.setItem("token",result.data);
                  window.location.href = 'chatBox.html'
              
             }else{

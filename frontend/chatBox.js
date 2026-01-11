@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded',()=>{
    
   //  user jo online hon unko store krne ke liye
     let showOnlineOnNav ;
+
+    let token = localStorage.getItem("token");
    
        
       //  ********SECTIONS ************
@@ -102,7 +104,11 @@ document.addEventListener('DOMContentLoaded',()=>{
                    
                       socket = io("https://messenger-axhs.onrender.com",{
                         transports: ["websocket"],
-                         withCredentials:true
+                        
+                         withCredentials:true,
+                         auth: {
+                           token: token
+                           }
                     });
 
                     if(socket === null)
@@ -274,7 +280,8 @@ function  navOnlineStatus(){
                     method:`${method}`,
                      credentials:"include",
                      headers:{
-                         "Content-Type":"application/json"
+                         "Content-Type":"application/json",
+                         "Authorization":`Bearer ${token}`
                      }
              }
               
@@ -869,6 +876,7 @@ add_user_lists.addEventListener("click",async(e)=>{
                  if(result.success){
                       
                        sessionStorage.clear();
+                       localStorage.clear();
                        window.location.href = 'index.html';
                  }
            }catch(err){
