@@ -52,20 +52,13 @@ const db = require("./Storage/storage");
  io.use((socket,next)=>{
       try{
 
-          const cookietoken = socket.handshake.headers.cookie
+           const token = socket.handshake.auth.token;
 
-          if(!cookietoken)
-          {
-               return  next (new Error("cookie nhi mili"));
-          }
 
-          //ager mil gai hai to
-
-          //cookies ko string me convert kro --->
-
-          const cookies = cookie.parse(cookietoken);
-
-        const token = cookies.token;
+                if(!token)
+                {
+                     return next(new Error("token missing"));
+                };
 
         //verify kro 
 

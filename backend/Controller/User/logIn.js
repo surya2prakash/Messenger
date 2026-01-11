@@ -61,12 +61,18 @@ exports.logIn = async(req,res) => {
             
        }
 
-        return res.cookie("token",token,options).status(200).json({
-            success:true,
-            message:"User Login",
+        // return res.cookie("token",token,options).status(200).json({
+        //     success:true,
+        //     message:"User Login",
            
-            user:isUser
+        //     user:isUser
 
+        // })
+
+        return res.status(200).json({
+             success:true,
+             message:"user Login",
+             data:token
         })
     }catch(err){
         console.error(err.message);

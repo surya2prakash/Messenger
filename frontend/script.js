@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       // ******API CALL************
        
       async function backendCall(method,path,{data}){
-          const url ="https://messenger-axhs.onrender.com/api/v1" ;
+          const url ="http://localhost:5000/api/v1" ;
 
              let options =   {
                    method:`${method}`,
@@ -142,8 +142,9 @@ document.addEventListener("DOMContentLoaded",()=>{
          try{
              showLoader();
             const result = await backendCall('POST',"/login",{data})
-
+                   localStorage.clear();
             if(result.success){
+
                  localStorage.setItem("token",result.data);
                  window.location.href = 'chatBox.html'
              
