@@ -101,6 +101,7 @@ document.addEventListener('DOMContentLoaded',()=>{
                 try{
                    
                       socket = io("https://messenger-axhs.onrender.com",{
+                        transports: ["websocket"],
                          withCredentials:true
                     });
 
