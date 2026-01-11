@@ -21,6 +21,10 @@ const groupSchema = new mongoose.Schema({
       description:{
           type:String,
           
+      },
+      groupImg:{
+          type:String,
+          required:true
       }
 },{timestamps:true});
 

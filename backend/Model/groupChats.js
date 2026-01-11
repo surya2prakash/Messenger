@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const groupChat = new mongoose.Schema({
       groupId:{
           type:mongoose.Schema.Types.ObjectId,
-          ref:"Group"
+          ref:"Group",
+          required:true
       },
       senderId:{
          type:mongoose.Schema.Types.ObjectId,

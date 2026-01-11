@@ -3,84 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Messenger</title>
+    <title>ChatBox</title>
     <link rel="stylesheet" href="chatBox.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
+    <!-- remix-icon cdn -->
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css"
+    rel="stylesheet"
+    />
+    <!-- send icon cdn -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=send" />
+    <!-- edit icon cdn -->
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=edit" />
+   <!-- new group -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=group_add" />
 </head>
 <body>
-     <div class="wrapper">
-          <!-- header section -->
-
-           <header class="header-section">
-              <h2>Messenger</h2>             
-              <button class="group-create-btn">
-                      <i class="fas fa-plus"></i> New Group
-              </button>
-           </header>
-
-           <div class="container">
-                   <!-- side bar for user list and Groups -->
-                   <aside class="side-section">
-                    <div class="side-bar">
-                      <input type="text" placeholder="search ..." />  
+  
+    <div class="wrapper ">
+           <section class="aside-section">
+            <nav class="search-container">
+              <form class="side-bar-search">
+                  <input type="text" placeholder="search" id="side-bar-search-input"> 
+                  </form>
+                                   
+            </nav>
+            <div class="all-List-Container">
+                 <div class="all-List">
+                       
+                 </div>
+                 <div>
+                <div class="aside-edit-icon"><i class="ri-pencil-fill"></i>
+                                          </div> 
+                      <div class="edit-options-container hide">                       
+                      <div class="create-group"><span class="material-symbols-outlined">
+                              group_add</span>
+                            New Group</div>
+                      <div class="show-my-profile"><i class="ri-user-line"></i>Profile</div>
+                      <div class="logout-icon">Log-Out</div>
                       </div>  
-                      <div class="show-group-list"></div>
-                      <div class="show-user-list"></div>
-                    </aside>
-          
+                      </div>  
+                      
+                      </div>
+           </section>
+           <section class="main-section hide">
+            <nav class="nav-bar">
+                <div class="profile-container">
+                   <div class="profile-image"><img src="" alt="NO" class="profile--image"></div>
+                   <div class="profile-name"></div>
+                 </div>
+                   <div class="right-icons">
+                   <div class="add_group_icon "><i class="ri-user-add-line"></i></div>
+                   <div class="dot-icon"><i class="ri-more-2-fill"></i></div>
+                    <div class="close-tab" ><i class="ri-close-line"></i></div>
+                  </div> 
+                 
+                  
+                   <div class="edit-container hide">
+                               <div class="close-icon"><i class="ri-close-line"></i></div>
+                        
+                              <div class="edit-profile ">
+                                   <div class="edit-img">
+                                <img src="" alt="no" id="edit-profile">
+                                </div>
+                                <div class="edit-main-container">
+                                    <div class="edit-name-container">   
+                                           <div class="edit-name" >name</div>
+                                          <button class="btn-edit"><i class="ri-edit-2-fill"></i></button>
+                                          </div> 
+                                  <form class="edit-form-name hide">
+                                      <input type="text" placeholder="edit name" id="edit_name_input">
+                                        <button class="btn-save">Save</button>
+                                  </form>
+                                </div>
+                                         <div class="group-users-list"></div>
+                              </div>
+                              <div class="delete-or-leave">
+                                     <button class="delete-account hide">delete Group</button>
+                                        <button class="leave-account">Leave Group</button> 
+                               </div> 
 
-            <main class="main-page">
-
-                <section class="private-chat-section">                     
-                                   <!-- chats ko show krne ke liye -->
-                    <div class="message-container"></div>
-                        <!-- input field message krne ke liye -->
-                     <form class="private-message-form">
-                       <div class="input-group">
-                         <input type="text" placeholder="type message" autocomplete="current-message" id="private-msg-field"/>
-                         <button >send</button>
-                        </div>
-                     </form>
-              
-                </section>
-
-                <!-- create group section -->
-                <section class="adduser-group-section">
+                          
+                   </div>
                    
-                     <form class="group-create-form">
-                         <div class="input-group">
-                          <input type="text" placeholder="group name" autocomplete="groupname" id="group-name"/>
-                          <button>create Group</button>
-                          </div>
-                     </form>                    
-                
-                </section>
-                <!-- group chat section -->
-                <section class="group-chat-section">
-                    
-                    <button class="add-newuser-btn">
-                          <i class="fas fa-user-plus"></i> Add User</button>
-                         
-                        <div class="show-usersfor-add"></div>  
+                 <div class="user-for-add-container hide">
+                     <div class="close-icon-add-user"><i class="ri-close-fill"></i></div>
+                   <div class="show-user-for-add">
+                        
+                   </div>
+                   </div>
+            </nav>
+            <div class="main-container">
+                   <div class="show-messages"></div>
+                   <div class="massage-input">
+                      <form class="input-message">
+                            <input type="text" placeholder="type-message" id="input-message">
+                           
+                              <button class="send-text  ">Send</button>
+                             
+                             
+                      </form>
+                   </div>
+            </div>
+           </section>
+           <!-- user ke khud ka profile show kren ke liye -->
+           <section class="show-Profile-section hide">
+                            <div class="myprofile-close"><i class="ri-close-fill"></i></div>
+                                 <div class="myprofile-image">
+                                   <img src="" alt="no" id="myprofile-image">
+                                   </div>
+                           
+                            <div class="edit-myprofile-name ">
+                            <div class="myprofile-name">name</div>
+                            <div class="myProfile-name-edit-btn"><i class="ri-edit-2-line"></i></div>
+                            </div>
+                             
+                                    <div class="myprofile_email"></div>
+                               <div class="profile_group_container">
+                                   <div class="group-in">Joined Groups :</div>
+                                   <div class="profile_group_list"></div>
+                               </div>
+                            
+                                 <form class="myprofile-update-name hide ">
+                                      <input type="text" placeholder="update name">
+                                      <button>update</button>
+                                 </form>  
+                           
 
-                          <div class="main-box">
-                              <!-- show group messages -->
-                           <div class="show-group-message"></div>
-                           <!-- group message form -->
-                       <form class="group-msg-send-form">
-                         <div class="input-group">
-                         <input type="text" placeholder="type message" autocomplete="current-message" id="msg-group-input-field"/>
-                         <button >send</button>
-                         </div>
-                     </form>
-                     </div>
-                
-                </section>
-           </main>
-      </div>         
-     </div>
-     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-     <script src="chatBox.js"> </script>
+                           
+                                   <button class="myprofile-delete">Delete Account</button>
+                            
+                              
+
+                      
+           </section>
+
+           <section class="create-group-container hide">
+               <div class="close_create_container"><i class="ri-close-fill"></i></div>
+                       <div class="create-groups">Create New Group</div>
+                      <form class="group_form">
+                            
+                             <input type="text" placeholder="enter name" id="group_name">
+                             <button class="create-btn">Create</button>
+                      </form> 
+           </section>
+
+    </div>
+       <script src="chatBox.js"></script>
+       <script src="http://localhost:5000/socket.io/socket.io.js"></script>
 </body>
 </html>

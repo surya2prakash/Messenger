@@ -1,129 +1,165 @@
-window.addEventListener("load",()=>{
+document.addEventListener("DOMContentLoaded",()=>{
 
+      // **************SECTIONS ********************
+           const login_section = document.querySelector(".login-section");
+           const signup_section = document.querySelector(".signup-section");
+           const loader_section = document.querySelector(".loadder");
+           const create_account = document.querySelector(".create-account");
+           const already_account = document.querySelector(".already-account");
 
-//signUp ------->
+      //--------- IMPORT FORMS----------------
+            const signup_form = document.querySelector(".signup-form");
+            const login_form = document.querySelector(".login-form");
+     
 
-const signSection = document.querySelector(".sign-section");
-const signName = document.getElementById("sign-name");
-const signPass = document.getElementById("sign-pass");
-const signEmail = document.getElementById("sign-email");
-const signform = document.querySelector(".sign-form");
+         // ************* FUNCTION TO HIDE AND SHOW SECTIONS AND LOADER***********  
+      function show(show)
+      {   
+            // hide the loader
+            loader_section.classList.add("hide");
 
-// signUp Pe ho aur login page show krna hai -->
-const showLogBtn = document.querySelector(".show-log-btn");
-
-//logIn --------->
-const loginSection = document.querySelector(".login-section");
-const logEmail = document.getElementById("login-email");
-const logPass = document.getElementById("login-pass");
-const logform = document.querySelector(".login-form");
-//login pe ho aur btn click hone pe signUp page show krna hai --->
-const createAccount = document.querySelector("#show-sign-btn");
-
-  
-     signSection.classList.add("active");
-      
-
-    
-
-
-
- 
- 
-
-//button pe click ho to signUp form show kr do ---->      
-createAccount.addEventListener("click",()=>{
-       signSection.classList.remove("active");  
-        loginSection.classList.add("active");
-         
-});
-
-showLogBtn.addEventListener("click",()=>{
-      signSection.classList.add("active");  
-        loginSection.classList.remove("active");
-})
-
-//signUp -- backend call 
-async function signUpbackend(data){
-     try{
-           const response = await fetch("http://localhost:5000/api/v1/sign",{
-              method:"POST",
-              
-              headers:{
-                "Content-Type":"application/json"
-              },
-              body:JSON.stringify(data)
-           });
-        const result = await response.json();
-           console.log(result);
-     }catch(err){
-         console.error(err.message);
-     }
-}
-
-
-//signUp --form handeling --->
-signform.addEventListener("submit",(event)=>{
-    event.preventDefault();
-    const email = signEmail.value.trim();
-    const fullName = signName.value.trim();
-    const password = signPass.value.trim();
-
-
-
-    const data ={
-         email:email,
-         fullName:fullName,
-         password:password
-    };
-
-    signUpbackend(data);
-});
-
-
-//logIn backend call ------->
- async function logInBackend(data)
- {
-    try{
-
-        const response = await fetch("http://localhost:5000/api/v1/login",{
-             method:"POST",
-             credentials:"include",
-             headers:{
-                "Content-Type":"application/json"
-             },
-             body:JSON.stringify(data)
-        });
-
-        const result = await response.json();
-        if(result.success)
-        {
-             alert(result.message);
-             window.location.href='chatBox.html'
+          if(login_section === show){
+               //eska matlab show nhi hai 
+               signup_section.classList.add("hide");
+               login_section.classList.remove("hide");
+          }else{
+              signup_section.classList.remove("hide");
+                 login_section.classList.add("hide"); 
+          } 
+      };
+     
+       function showLoader(showLoader)
+       {
+           
+               signup_section.classList.add("hide");
+                login_section.classList.add("hide");
+                loader_section.classList.remove('hide');
           
-        }else{
-             alert(result.message);
-        }
+       }
 
-    }catch(err){
-       console.log(err.message);
-    }
- }
+      // ******API CALL************
+       
+      async function backendCall(method,path,{data}){
+          const url ="http://localhost:5000/api/v1" ;
 
- //logIn form handeling ---->
-logform.addEventListener("submit",(event)=>{
-      event.preventDefault();
-    
-      const email = logEmail.value.trim();
-      const password = logPass.value.trim();
-        
-      
-      const data = {
-           email:email,
-           password:password
+             let options =   {
+                   method:`${method}`,
+                   credentials:"include",
+                   headers:{
+                      'Content-Type':'application/json'
+                   }
+                  }
+
+            if(data)
+               {
+                   options.body = JSON.stringify(data);
+               };
+
+               let finalpath = path;
+  
+               
+           let updatedUrl= `${url}${finalpath}`;   
+               
+          try{
+              const response = await fetch(`${updatedUrl}`,options)
+
+              if(!response.ok){
+               const errorResponse = await response.json(); 
+                  throw new Error( `HTTP ERROR: ${errorResponse.message}`) 
+              }
+               const result = await response.json(); 
+               
+               return result;
+          }catch(err){
+             console.error(err);
+
+             throw err ;
+          }
+               
       }
-      
-      logInBackend(data);
-})
 
+       // *****EVENT LISTINERS*******
+      create_account.addEventListener("click",(e)=>{
+              show(signup_section);
+      });
+
+      already_account.addEventListener("click",(e)=>{
+       
+           show(login_section);
+      });
+
+
+     signup_form.addEventListener("submit",async(e)=>{
+       e.preventDefault();
+           const user_name = document.getElementById("user-name");
+           const user_email = document.getElementById("user-email");
+           const user_password = document.getElementById("user-password");
+           const user_confirmPass = document.getElementById("user-confirmPassword");
+              
+               if(user_confirmPass.value !== user_password.value)
+               {
+                  alert("Password Not Match.");
+                  return;
+               };
+              const data={
+                 fullName:user_name.value.trim(),
+                 email:user_email.value.trim(),
+                 password:user_password.value.trim(),
+              };
+
+           try{
+                   showLoader();
+                  const result  = await backendCall('POST','/sign',{data});
+                  if(result.success)
+                  {
+                  // if success then ->
+                      show(login_section);
+                  }else{
+                     // if success:false then ->
+                     alert(result.message);
+                     show(signup_section);
+                  }
+           }catch(err)
+           {
+              console.error(err.message);
+            //   if network err then show
+              show(signup_section);
+           }   
+        
+        
+     })    
+      
+    login_form.addEventListener("submit",async(e)=>{
+      e.preventDefault();
+           const userEmail = document.getElementById("login-email");
+           const userPassword = document.getElementById("login-password");
+        
+           const data ={
+              email:userEmail.value.trim(),
+              password:userPassword.value.trim()
+           };
+
+         try{
+             showLoader();
+            const result = await backendCall('POST',"/login",{data})
+
+            if(result.success){
+                 window.location.href = 'chatBox.html'
+             
+            }else{
+               //if success false then ->
+                alert(result.message);
+                show(login_section);
+            }
+
+         }catch(err){
+            console.error(err);
+      //if network error then ->
+            show(login_section);
+         }
+
+
+
+    })
+       
 })

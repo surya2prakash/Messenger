@@ -27,8 +27,8 @@ exports.logIn = async(req,res) => {
             });
         };
 
-        const isUser = await User.findOne({email:email}).select("password");
-
+        const isUser = await User.findOne({email:email}).select('+password');
+           
         if(!isUser)
         {
             return res.status(400).json({
@@ -50,14 +50,15 @@ exports.logIn = async(req,res) => {
            email:isUser.email,
            name:isUser.fullName
        }
-        
+       
        const token =  jwt.sign(payload,process.env.JWT_SECRET,{expiresIn:'2h'});
 
        const options={
             httpOnly:true,
             secure:false,
             maxAge: 3 * 24 * 60 * 60 * 1000,
-            path:'/'
+            path:'/',
+            
        }
 
         return res.cookie("token",token,options).status(200).json({

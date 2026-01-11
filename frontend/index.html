@@ -1,62 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Messenger</title>
-     
-   <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat App</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Font: Poppins -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
 </head>
 <body>
-      <main class="wrapper">
-       <!-- login Section -->
-        <section class="login-section" >
-          <div class="main-box" >
-            <h2>Messenger</h2>
-          <!-- login form -->
+     <div class="wrapper">
+          
+           <section class="login-section hide" >  
+            <div class="logo">Login</div>        
                <form class="login-form">
-                <div class="input-group">
-                <label for="login-email">Email</label>
-                <input type="email" placeholder="email" id="login-email" autocomplete="useremail"/>
-                </div>
-                <div class="input-group">
-                <label for="login-Pass" >Password</label>
-                <input type="password" placeholder="password" id="login-pass" autocomplete="current-password"/>
-                </div>
-                <button class="login-btn">Log In</button>
+                  
+                   <input type="email" placeholder="Email Address" id="login-email" >
+                  
+                  
+                   <input type="password" placeholder="Password" id="login-password" >
+                 
+                   <button>Log In</button>
                </form>
-             <p class="toggle-link">  
-                 Don`t have an account ? <button  id="show-sign-btn" >Create Account</button>
-               </p>
-               </div>
-        </section>
-      <!-- section Sign Up -->
-     <section class="sign-section"  >
-        <div class="main-box">
-           <h2>Create Account</h2>
-          <!-- Sign Up Form -->
-             <form  class="sign-form">
-              <div class="input-group">
-              <label for="signName">Full Name</label>
-               <input type="text" placeholder="fullname" id="sign-name" autocomplete="username" />
-               </div>
-               <div class="input-group">
-               <label for="signEmail">Email</label>
-               <input type="email" placeholder="email" id="sign-email" autocomplete="useremail"/>
-               </div>
-               <div class="input-group">
-               <label for="signPass">Password</label>
-               <input type="password" placeholder="password" id="sign-pass" autocomplete="current-password"/>
-               </div>
-                 <button class="sign-btn">Sign Up</button>
-               </form>
-               <p class="toggle-link">
-                  Already have an account ? <button  class="show-log-btn">Log in</button>
-               </p>
-        </div>
-         </section>  
-      </main>
-      <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-      <script src="script.js"> </script>
+
+               <div class="create-account">Create Account ?</div>
+
+           </section>
+            
+       <section class="signup-section">
+              <div class="logo">Sign Up</div>
+       <form class="signup-form" >
+             
+                     <input type="text" placeholder="Full Name" id="user-name">
+              
+
+              
+                       <input type="email" placeholder="Email Address" id="user-email">
+              
+
+              
+                   <input type="password" placeholder="Password***" id="user-password">
+           
+
+         
+                   <input type="password" placeholder="Confirm Password" id="user-confirmPassword">
+             
+
+              <button>Sign Up</button>            
+           </form>
+
+            <div class="already-account">Already have account ?</div>
+           </section>
+      
+     </div>
+     <div class="loadder hide"><span class="loader"></span></div>
+
+     <script src="script.js"></script>
 </body>
 </html>

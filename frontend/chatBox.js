@@ -1,522 +1,1164 @@
 
 
-let socket = null;
 
-//user ki id ---->
 
-let userId = null;
+document.addEventListener('DOMContentLoaded',()=>{
 
-let receiverId = null;
+    
+     
 
-let groupId = null;
+   let groupId = null;
+   let socket =null; 
 
-let userList = document.querySelector(".show-user-list");
-let groupList = document.querySelector(".show-group-list");
+   //kis user or group pe click hua hai
+   let currentId = null;
+   //kya vo user hai or group hai
+   let currentType =null;
+   
+  //  user jo online hon unko store krne ke liye
+    let showOnlineOnNav ;
+   
+       
+      //  ********SECTIONS ************
+         const aside_section = document.querySelector(".aside-section");
+          const main_section = document.querySelector(".main-section");
+          const profile_section = document.querySelector(".show-Profile-section");
 
-let privateSection = document.querySelector(".private-chat-section");
-let addUserSection = document.querySelector(".adduser-group-section");
-let groupChatSection = document.querySelector(".group-chat-section");
+          // aside section elements ------------>
 
-     // function showSection(sectiontoshow){
-            privateSection.classList.add("active");
-            addUserSection.classList.add("active");
-            groupChatSection.classList.add("active");
-
-           
-  let privateMessageForm = document.querySelector(".private-message-form"); 
-  let privateMessageInput = document.querySelector("#private-msg-field");         
-           
- let prevPrivateMessage = document.querySelector(".message-container");       
- 
- //user new group create krna chahta hai ---->
-  const newGroupBtn = document.querySelector(".group-create-btn");
-  const createGroupForm = document.querySelector(".group-create-form");
-  const groupNameField = document.querySelector("#group-name"); 
-  const prevGroupMessage = document.querySelector(".show-group-message");
-  const groupMessageForm = document.querySelector(".group-msg-send-form");
-  const groupMessageInput = document.getElementById("msg-group-input-field");
-  
-  //add user -> button se user ko group me add kro 
-  const addUserBtn = document.querySelector(".add-newuser-btn");
-  //users ko show kro jinko group me add krna chahte ho
-     const showUsersAddGroup = document.querySelector(".show-usersfor-add");
-(
-   async function verifyAuthorization()
-   {
-      try{   
-             socket = io("http://localhost:5000",{
-                withCredentials: true
-           });
+            const allUserAndGroups = document.querySelector(".all-List");
+            // input search bar form -> for searching the user
          
-          
-           isverify();
-         
+            const side_bar_searchForm = document.querySelector(".side-bar-search");
+
+            // main Section element --------------->
+
+            const showAllMessages = document.querySelector(".show-messages");
+
+            // main-section -nav-bar 
+           
         
-   }catch(err){
-    console.error(err.message);
-  }
-}
 
-
-)();
-
-
-async function isverify(){
-      try{
-            
-            if(socket === null)
-            {
+              const profile_name = document.querySelector(".profile-name");
+              const profile_details_name = document.querySelector(".edit-name");
+             
+              const profile_name_container = document.querySelector(".edit-name-container")
+          
+              const show_group_members = document.querySelector(".group-users-list");
               
-               return;
-            }
-              //verify hone ke baad connected true hua to --->
-               socket.on('connect',()=>{
-             alert('socket token verifyed.')
-                });
+               const nav_profile_img = document.querySelector(".profile--image");
+               
+              //  nav group -> add user icon and dot icon for edit group
+                const close_tab = document.querySelector(".close-tab");
+                // add user-->
+                 const add_group_icon = document.querySelector(".add_group_icon");
+                 const add_user_close_btn = document.querySelector(".close-icon-add-user");
+                 const add_user_container = document.querySelector(".user-for-add-container");
 
-              //ager error aa gya to --->
-                  socket.on('connect_error',(err)=>{
-               //backend se aane wala error ---->
-                console.error(err.message);
-             alert('socket auth failed.');
-             window.location.href='index.html'
-         })
-             //baki ke socket listeners-->
+               const add_user_lists = document.querySelector(".show-user-for-add");
+               
+               
+               const create_group_section = document.querySelector(".create-group-container");
+                  const close_create_group_section = document.querySelector(".close_create_container"); 
+                  const create_group_form = document.querySelector(".group_form");   
+                  
+                 
 
-                  setupSocketListener();
+                 // group edit container  ----------> 
+                      const threeDot_icon = document.querySelector(".dot-icon");
+                       const group_edit_container = document.querySelector(".edit-container");
+                       const hide_edit_container = document.querySelector(".close-icon");
+                       const delete_group_btn = document.querySelector(".delete-account ");
+                        const leave_group = document.querySelector(".leave-account");
+                         const group_profile_img = document.getElementById("edit-profile");
+                         const save_groupname_btn = document.querySelector(".btn-save");
+                          const profile_name_edit_btn = document.querySelector(".btn-edit");
+                          const edit_name_form = document.querySelector(".edit-form-name");
 
-      }catch(err){
-       console.error(err.message);
-      }
-}
+                  // send message form 
+                    const send_message_form = document.querySelector(".input-message");
+                    const input_message = document.getElementById("input-message");
 
 
-function setupSocketListener()
-{
-            socket.on('userDetails',(paylaod)=>{
-                   userId = paylaod.id;
-                   fetchAllUser();
-            })
+            //  side - profile-edit -pen icon 
+                  const show_profile_edit = document.querySelector(".aside-edit-icon")
+                  const show_profile_options = document.querySelector(".edit-options-container");
+                  const create_new_group = document.querySelector(".create-group");
+                   const show_profile = document.querySelector(".show-my-profile");
+                    const log_Out = document.querySelector(".logout-icon");
 
-            //sabhi users ko call kro ---->
+                    const my_profile_close = document.querySelector(".myprofile-close");
+                    const myProfile_name = document.querySelector(".myprofile-name");
+                    const myProfile_email = document.querySelector(".myprofile_email");
+                    const myProfile_groups = document.querySelector(".profile_group_list");
+                    const myProfile_delete = document.querySelector(".myprofile-delete"); 
+                    const myProfile_img = document.getElementById("myprofile-image");
 
-                socket.on('privateMsg',(data)=>{
-                   const {id,senderId,secondUser,textMessage} = data;
-       //message id , jisne bheja hai uski id , jisko bheja hai uski id , message
-                        console.log("private me aaya",data);
-                if(senderId === userId || senderId === receiverId)
-                {
+                    const loader = document.getElementById("loader");
+
+        (
+             async()=>{
+                try{
                    
-                //privateMessages ko append kro ---> jab user chatbox open kiya ho
-                   appendPrivateMessages(senderId,textMessage)
+                      socket = io("http://localhost:5000",{
+                         withCredentials:true
+                    });
+
+                    if(socket === null)
+                    {
+                        return ;
+                    }else{
+                    socket.on('connect',()=>{
+                          
+                     
+                            
+                                showUsersAndGroup();  
+                        });
+   
+
+                        socket.on('connect_error',(err)=>{
+                            //   authentication failed ho gya hai 
+                            window.location.href ='index.html';
+                        })
+                    }
+                 
+                    socket.on("userDetails",async(payload)=>{
+                     try{
+                     
+                            sessionStorage.setItem("user",JSON.stringify(payload));
+                           
+                          socket.emit("online",payload.id);
+                     }catch(err){
+                       console.error(err);
+                     }
+                         
+                       
+                     })
+
+                     socket.on("getOnlineUsers",(onlineUserIds)=>{
+                     
+                      setTimeout(()=>{
+                        console.log("callhua");
+                             asideOnlineStatus(onlineUserIds);
+                              showOnlineOnNav=onlineUserIds;
+                              
+                      },5000)
+                           
+                     })
+
+                     
+                    
+                        socket.on("privateMsg",(data)=>{
+
+                           
+                              
+                          if (currentType === 'user' && currentId === data?.senderId){
+                            console.log("1");
+                              let newdata ={
+                                      _id:data.id,
+                                      senderId:{
+                                          _id:data.senderId
+                                      },
+                                      reciverId:data.secondUser,
+                                      textMessage:data.textMessage
+                              }
+                             
+                           
+                                       privateMessageShow([newdata]);
+                              
+                           
+                            }
+                          
+                             })
+
+                       socket.on("privateToMsg",(data)=>{
+                                 const myDetails = sessionStorage.getItem("user");
+                                const myId = JSON.parse(myDetails);
+                                 
+                             if (currentType === 'user' && myId.id === data?.senderId){
+                             
+                                         let newdata ={
+                                      _id:data.id,
+                                      senderId:{
+                                          _id:data.senderId
+                                      },
+                                      reciverId:data.secondUser,
+                                      textMessage:data.textMessage
+                              }
+                             
+                           
+                                       privateMessageShow([newdata]);
+                              
+                             }
+
+                       })      
+                           
+                
+              socket.on("recive_group_message",(data)=>{
+                   
+                  
+        if (currentType === 'group' && currentId === data.groupId) {
+                    
+                          const newData = {
+                              groupId:{ _id:data?.groupId },
+                         message:data?.message,
+                         senderId:{ _id:data?.senderId, fullName:data?.senderName },
+                         _id:data?.id
+             };
+        showGroupMessages([newData]);
+    }
+                           
+                       })
+                  
+                    
+                }catch(err){
+                     console.log(err.message);
                 }
 
-                  })
-                
-             socket.on('recive_group_message',(data)=>{
-               //  const {id ,senderId,groupId,message} = data;
-               console.log("Group me aaya",data)
-                  if(data.groupId === groupId)
-                  {
-                       appendGroupMessages(data.senderId,data.message);
-                  }
-             })
-}
+             }
+        )();
 
-
-
-function appendPrivateMessages(senderId,textMessage)
-{
-   
-   //element create kro -->
-   const div = document.createElement('div');
-    //check kro kya tumne message send kiya hai 
-    div.className = senderId === userId ? 'my-message' :'other-user'
-      div.innerText = textMessage
-      prevPrivateMessage.appendChild(div);     
-
-      prevPrivateMessage.scrollTop = prevPrivateMessage.scrollHeight ;
-}
-
-function appendGroupMessages(senderId ,message)
-{
-    
-     //element create kro 
-     const div = document.createElement("div");
-     div.innerText = message ;
-     div.className = (senderId === userId) ? 'my-message' : 'other-user'
-     prevGroupMessage.appendChild(div);
-
-     prevGroupMessage.scrollTop = prevGroupMessage.scrollHeight;
-}
-
-//sare user ko le ke aao ----->
-async function fetchAllUser(){
-     try{
-
-      const response = await fetch("http://localhost:5000/api/v1/getuser",{
-          method:'GET',
-          credentials:'include',
-          headers:{
-             'Content-Type':'application/json'
-          }
-      });
-
-      const result = await response.json();
-
-      if(result.success)
-      {
-   
-          // yhan 2 case hain ---->
-          //1. user kis group me join hai vo le ke aao -->
-               if( result?.currentUser?.joinedgroup.length > 0)
-               {
-                  //ager user kisi group me join hai tab 
-                      const data = [...result?.currentUser?.joinedgroup];
-                      userJoinedGroup(data);
-
-               }
-          //2. sare users ko le ke aao 
-               showAllUsers(result)
+function asideOnlineStatus(onlineUserIds){
+          
+      const currentElement = document.querySelectorAll(".wrapImg");
+     
+      currentElement.forEach(element =>{
+              if(element.classList.length > 0){
+                   element.classList.remove("online-status");
+              }
+      })
+        
+       onlineUserIds.forEach(element =>{
+           const currentElement = document.getElementById(element);  
              
-      }else{
-         alert(result.message);
-      }
-
-     }catch(err){
-         console.error(err.message);
-     }
-};
-
-
-//user function ---> for group 
-
-function userJoinedGroup(data)
-{   
-   
-   groupList.innerHTML ="";
-      data?.forEach(group => {
-           const div = document.createElement('div');
-           div.id = group._id;
-           div.className='user-joined-group';
-           div.innerText = group.groupName ;
-           groupList.appendChild(div);
-
-           div.addEventListener('click',(event)=>{
-                 groupId = event.target.id;
-
-                
-               
-                 privateSection.classList.add("active");
-            addUserSection.classList.add("active");
-            groupChatSection.classList.remove("active");
-                   
-                fetchGroupMessages(groupId);
-
-           })
-      });
-
-  //ek element create kro 
-};
-
-function showAllUsers(result){
-
-     userList.innerHTML ="";
-     result?.otherUsers.forEach(user=>{
-          const div = document.createElement('div');
-           div.id = user._id;
-           div.className='users';
-           div.innerText = user.fullName ;
-           userList.appendChild(div);
-
-           //jis user pe click hua hai uske sath ki chats-section kholo
-           div.addEventListener('click',(event)=>{
-                 const id = event.target.id;
-                
-                    privateSection.classList.remove("active");
-                     addUserSection.classList.add("active");
-                    groupChatSection.classList.add("active");
-               
-                         receiverId ="";
-                         receiverId = id; 
-                         fetchPrivateMessages(id);
-               
-                
-           })
-     })
+           const siblingElement = currentElement.previousSibling;
+           
+                siblingElement.classList.add("online-status");
+            
+           
+       })
 }
 
- async function fetchPrivateMessages(id)
-{   
-   try{
+function  navOnlineStatus(){
+       
+   const currentElement = document.querySelectorAll(".profile-image");
+     
+      currentElement.forEach(element =>{
+              if(element.classList.length > 0){
+                   element.classList.remove("nav-online-status");
+              }
+      })
+         
+     const status =  showOnlineOnNav.some(element =>{
+          
+           const currentElement =  document.getElementById(`${element}c.1`);
+            console.log(currentElement);
+           if(currentElement){
+             const sibling = currentElement.parentElement;
+                sibling.classList.add("nav-online-status")
+                return true; 
+           }
+           return false;
+           
+       });
 
-      const response = await fetch(`http://localhost:5000/api/v1/message?id=${id}`,{
-            method:'GET',
-            credentials:'include',
-            headers:{
-               'Content-Type':'application/json'
-            }
-      });
+       
+    return status;
+}
+           
+        //   *** BACKEND API CALL ******* 
+      async function backendCall(method,path,{data,params,query}){
+               const BASE_URL ="http://localhost:5000/api/v1" ;
+             let options = {
+                    method:`${method}`,
+                     credentials:"include",
+                     headers:{
+                         "Content-Type":"application/json"
+                     }
+             }
+              
+             if(data){
+                  options.body = JSON.stringify(data);
+             }
+               
+            let finalPath = path ; 
+             if(params && typeof params === "object"){
 
-      const result = await response.json();
-         if(result.success)
-         {    prevPrivateMessage.innerHTML='';
-              showPrivateMessages(result.chats);
-             
-         }else{
-             alert(result?.message);
-         }
+                for(let key in params){
+                   finalPath = finalPath.replace(`:${key}`,params[key])
+                }
+                 
+             };
+             let queryString = ""
+             if(query && Object.keys(query).length > 0){
+                  queryString = `?${new URLSearchParams(query).toString()}`;
+             };
+             try{
+                 const response = await fetch(`${BASE_URL}${finalPath}${queryString}`,options)
 
-   }catch(err){
-      console.error(err.message);
+                 
+
+                   if(!response.ok)
+                   {
+                       const errorResponse = await response.json();
+
+                         throw new Error(errorResponse.message);
+                   }
+                 const result = await response.json();
+                   return result ;
+             }catch(err){
+                 console.error(err);
+             }
+      };
+
+     
+
+   
+
+   function show(element){
+       if(element){
+            element.classList.remove("hide");
+       }
+   };
+    function hide(element){
+       if(element){
+            element.classList.add("hide");
+       }
+    };
+
+   function toggle(element){
+       if(element){
+             element.classList.toggle("hide");
+       }
    }
 
-}
+    
 
-function showPrivateMessages(chats){
+//    message send process --------->
+     function sendMessageFunction(sendToId,message,type){
+          
+          
+         let data ={};
+           if(type === 'user'){
 
-        chats.forEach(chat =>{
-            
-              const div = document.createElement("div");
-               div.innerText=chat.textMessage;
-               div.id =chat._id;              
-               if(chat.senderId === userId)
-               {
-                   div.className = 'my-message'
-               }else{
-                  div.className ='other-user'
+          
+                data ={
+                   senderId:sendToId,
+                   textMessage:message
                }
-
-               prevPrivateMessage.appendChild(div);
-        })
-}
-
-privateMessageForm.addEventListener('submit',(event)=>{
-    event.preventDefault();
+            socket.emit("new_message",
+                 data
+            )
+            return;
+      }  
       
-      const newMessage = privateMessageInput.value.trim();
+      if(type === 'group'){
+          
+           
+            data={
+                  groupId:sendToId,
+                  message:message
+            }
 
-      if(newMessage === '')
-      {
-         //send button hide kar do
-      }else{
-      
-         socket.emit('new_message',{
-          secondUser:receiverId,
-          textMessage:newMessage
-        });     
-        let data = {
-            textMessage:newMessage,
-            senderId:userId
-        }
-         showPrivateMessages([data]);
+           socket.emit("group_new_message",
+               data
+           )
+           console.log("message backend ke liye send");
+           return;
       }
-       privateMessageInput.value='';
+     }
+
+
+      // SIDE SECTION USERS AND GROUP ADD
+
+  function addIntoDocuments(joinedgroup,userLists){
+           
+            allUserAndGroups.innerText = '';
+
+
+        if(Array.isArray(joinedgroup) && joinedgroup.length > 0){    
+      const newFragment = document.createDocumentFragment();
+          joinedgroup.forEach(element => {
+                 const parentDiv = document.createElement("div");
+                  parentDiv.className="wrap-profile"
                
-});
+                 const elementDiv = document.createElement("div");
+                 const img_Profile = document.createElement("img");
+                 const wrap_Img =document.createElement("div");
 
-//message ko listen  karo --->
-
-newGroupBtn.addEventListener("click",()=>{
+                      wrap_Img.className="wrapImg";
+                      img_Profile.className='imgProfile'    
+                       img_Profile.src=element?.groupImg  
+                    elementDiv.className="group" ;  
+                    
+                   elementDiv.id = element._id;
+                   elementDiv.innerText =element.groupName;
+                   
+                   wrap_Img.append(img_Profile);
+                   parentDiv.append(wrap_Img,elementDiv)
+                    newFragment.append(parentDiv);  
+                               
+           });    
             
-        privateSection.classList.add("active");
-            addUserSection.classList.remove("active");
-            groupChatSection.classList.add("active");
+           allUserAndGroups.append(newFragment);
             
+          };
 
-});
-
-createGroupForm.addEventListener("submit",(event)=>{
-      event.preventDefault();
-      const groupName = groupNameField.value.trim();
-
-      if(groupName === '')
-      {
-         alert("Enter group Name");
-      };
+          if(Array.isArray(userLists) &&  userLists.length > 0){
+            const newFragment = document.createDocumentFragment();    
+             userLists.forEach(element => {
+                const parentDiv = document.createElement("div");
+                 const elementDiv = document.createElement("div"); 
+                    const img_Profile = document.createElement("img");
+                 const wrap_Img =document.createElement("div");  
+                  wrap_Img.className="wrapImg";
+                       img_Profile.className='imgProfile'   
+                    elementDiv.className ="user"               
+                   elementDiv.id = element._id;
+                  
+                   elementDiv.innerText =element.fullName;
+                       img_Profile.src=element?.profileUrl;
+                      parentDiv.className='wrap-profile'
+                     wrap_Img.append(img_Profile);
+                   parentDiv.append(wrap_Img,elementDiv)
+                    newFragment.append(parentDiv); 
+           });    
+           allUserAndGroups.append(newFragment);
+            
+          }
+  }
+ 
+allUserAndGroups.addEventListener("click",(e)=>{
          
-      const data = {
-         groupName:groupName
-      };
-            //backend call
-            createGroup(data);
+      const clickUser = e.target.closest(".user");
 
-            groupNameField.value='';
+      const mediaQuery = window.matchMedia("(max-width : 600px)");
+
+   function handleChange(e){
+      if(e.matches){
+           aside_section.classList.add("hide");
+           main_section.classList.remove("hide");
+      }
+   }
+
+  handleChange(mediaQuery);
+
+  mediaQuery.addEventListener("change",handleChange);
+     
+
+        if(clickUser){
+                      const id =clickUser.id ;
+                       // show the message of this -> id
+                           showMessageFunction(id,'user');
+
+          // when click on user -> profile section and create group section should be close 
+                           show(main_section);
+                          hide(profile_section);
+                          hide(create_group_section);
+                          hide(add_user_container);
+                          hide(group_edit_container);
+                           currentId=id;
+                           currentType='user' 
+               
+                       
+                    
+                    
+        }
+       
+        const clickGroup = e.target.closest(".group");
+
+        if(clickGroup){
+              const id = clickGroup.id;
+                        // show the message of this -> id
+                          showMessageFunction(id,'group'); 
+                          // show the main section
+                          show(main_section);
+               // when click on group -> profile section and create group section should be close            
+                          hide(profile_section);
+                          hide(create_group_section);
+                          // hide group edit contianer +  add user container
+                          hide(add_user_container);
+                          hide(group_edit_container);
+                              currentId=id;
+                              currentType="group"
+                    
+                          
+        }
+         
+      
+        
 })
 
-async function createGroup(data)
-{
-   try{
 
-      const response = await fetch("http://localhost:5000/api/v1/group",{
-              method:"POST",
-              credentials:"include",
-              headers:{
-               'Content-Type':"application/json"
-              },
-              body:JSON.stringify(data)
-      });
+ 
+// call backend to show the user and groups
 
-      const result = await response.json();
-      if(result.success)
-      {
-         fetchAllUser();
-      }
+  async function showUsersAndGroup(){
+     
+        show(loader);
+        try{
+                const result = await backendCall("GET",'/getuser',{});
+                 
+                if(result.success){
+                   addIntoDocuments(result?.currentUser?.joinedgroup,result.otherUsers);
+                }else{
+                    alert(result.message)
+                }    
+                 
+        }catch(err){
+           console.error(err);
+        };
 
-   }catch(err){
-    console.error(err.message);
+        hide(loader);
+       
+  }
+
+
+// private messages ko show krne ke liye ---->
+
+   function privateMessageShow(data){
+      const userDetails = sessionStorage.getItem("user");
+              const userParse = JSON.parse(userDetails);
+             
+              if(Array.isArray(data)){
+                          const newFragment = document.createDocumentFragment();
+                        
+                          data.forEach(element =>{
+                                  const messageDiv = document.createElement("div");
+                                        messageDiv.innerText = element.textMessage ;
+                                       messageDiv.className = element.senderId._id === userParse.id ? 'my-message' : 'other-user-message';
+                                       messageDiv.dataset.id = element._id ;
+
+                                       newFragment.append(messageDiv);
+                          });
+
+                           
+                           showAllMessages.append(newFragment); 
+                           
+                        showAllMessages.scrollTop=showAllMessages.scrollHeight;   
+                        };
+                    
+               
    }
-}
 
-async function fetchGroupMessages(id)
-{
-     try{
-         const response = await fetch(`http://localhost:5000/api/v1/groupChat?id=${id}`,{
-            method:'GET',
-            credentials:'include',
-            headers:{
-               'Content-Type':'application/json'
-            }
+
+//    group messages ko show krne ke liye 
+   function showGroupMessages(data){
+       
+         const newFragment = document.createDocumentFragment();
+
+         const userDetails = sessionStorage.getItem("user");
+              const userParse = JSON.parse(userDetails);
+         data.forEach(element=>{
+              
+            const mainDiv = document.createElement("div");
+            const massageDiv= document.createElement("div");
+            const senderDiv = document.createElement("span");
+            
+               mainDiv.innerText = '';
+               massageDiv.innerText = '';
+               massageDiv.innerText = element.message;
+               massageDiv.id=element._id;
+               mainDiv.id = element?.groupId._id;
+               senderDiv.innerText=element?.senderId?.fullName;
+               senderDiv.id = element?.senderId._id;
+               senderDiv.className='user-name';
+               massageDiv.className="user-message";
+               mainDiv.className =element?.senderId._id === userParse.id ? "my-group-message" :"other-user-group-message";
+               mainDiv.append(senderDiv,massageDiv);
+               
+               newFragment.append(mainDiv);
          });
 
-         const result = await response.json();
-         
-         if(result.success)
-         {
-             prevGroupMessage.innerHTML = "" ;
-              showGroupMessages(result?.oldChats);
-         }
-         
-     }catch(err){
-        console.error(err.message);
-     }
-};
+         showAllMessages.append(newFragment);
 
-function showGroupMessages(oldChats)
-{
-   
-   
-        oldChats.forEach(chat =>{
-         console.log(chat);
-            const div = document.createElement("div");
-            div.innerText=chat?.message;
-            div.id = chat._id;
-             if(chat.senderId === userId)
-             {
-                 div.className ='my-message'
-             }else{
-                 div.className ='other-user'
-             }
-             prevGroupMessage.appendChild(div);
-
-             
-        })
-}
-
-groupMessageForm.addEventListener("submit",(event)=>{
-      event.preventDefault();
-       const newMessage =   groupMessageInput.value.trim();
-       
-       if(newMessage === '')
-       {
-         //button ko hide kar dena 
-       }else{
-             socket.emit('group_new_message',{
-            groupId:groupId,
-            message:newMessage
-       })
-        const data ={
-             message:newMessage,
-             senderId:userId
-        }
-       showGroupMessages([data]);
-      }
-    groupMessageInput.value ='';
-})
-
-//add user button pe click ho tab -->
-
-async function fetchUsers()
-{   
-   try{
-      const response = await fetch(`http://localhost:5000/api/v1/addUsers?groupId=${groupId}`,{
-           method:'GET',
-           credentials:"include",
-           headers:{
-            'Content-Type':'application/json'
-           }
-      });
-
-      const result = await response.json();
-         
-         if(result.success)
-         {
-            let data = [...result?.users ];
-
-                  appendTheusers(data);
-         }else{
-            alert(result.message);
-         }
-   }catch(err){
-           console.error(err.message);
+         showAllMessages.scrollTop=showAllMessages.scrollHeight;
    }
+   
 
-}    
+  function showEditContainer(result){
+                             show_group_members.innerHTML='';
+                             profile_details_name.innerText =result?.groupDetails?.groupName;
+                             group_profile_img.src = result?.groupDetails?.groupImg; 
+                            
+                           let details = sessionStorage.getItem("user");
 
-addUserBtn.addEventListener("click",()=>{
+                           const parseDetails= JSON.parse(details);
+                              if(parseDetails.id === result?.groupDetails?.admin){
+                                  show(delete_group_btn);
+                                  delete_group_btn.id=result?.groupDetails?._id ;
+                              }
+
+                              if(Array.isArray(result?.groupDetails?.groupMembers)){ 
+                               const newFragment = document.createDocumentFragment();
+
+                               result?.groupDetails?.groupMembers.forEach(element=>{
+                                  const parentDiv = document.createElement("div");
+                                    const member = document.createElement("div");
+                                    member.className ='groupMember';
+                                     member.innerText = element.fullName;
+
+                                    const btn = document.createElement("button");
+                                         btn.innerText= "Remove";
+                                         btn.id = element._id;
+                                         btn.className = 'remove-btn';
+                                         parentDiv.className='parent-group-member'
+                                      parentDiv.append(member,btn);
+                                      newFragment.append(parentDiv);
+                                       
+                                      if(parseDetails.id !== result.groupDetails.admin ){
+                                        hide(btn);  
+                                      }
+                                      
+                                  
+                                      
+                            })
+                            show_group_members.append(newFragment);
+                          } 
+                            
+  }
+
+
+show_group_members.addEventListener("click",async(e)=>{
+              const closestbtn = e.target.closest(".remove-btn");
+
+                try{
+                const result = await backendCall("DELETE",'/leave/:groupId/:userId',{params:{groupId,userId:closestbtn.id}})
+
+                if(result.success){
+                      showGroupEditFunction (groupId);
+                }else{
+                    alert(result.message);
+                }
+                }catch(err){
+                   console.error(err.message);
+                }
+  
+                    
+                  })        
+
+//  show MESSAGES ----------->
+   async function showMessageFunction(clickId,type) {
+             
+              const data = sessionStorage.getItem('user');
+                      const checkId = JSON.parse(data);
+              
+                     
+                   if(type === 'user'){
+                    
+                    profile_name.innerText ='';
+
+                    nav_profile_img.src = '';
+                   
+                      try{
+                           const result = await backendCall("GET",'/message',{query:{id:`${clickId}`}});
+                           
+                            if(result.success){
+                                profile_name.innerText = result?.secondUser?.fullName ;
+                        
+                          hide(threeDot_icon);
+                           hide(add_group_icon);
+                           hide(group_edit_container);
+
+                            nav_profile_img.src = result?.secondUser?.profileUrl;
+                              nav_profile_img.id=result?.secondUser?._id+"c.1";
+                             
+                          showAllMessages.innerText='';
+                             privateMessageShow(result?.chats)
+                            }else{
+                                alert(result.message);
+                            }
+                      }catch(err){
+                         console.error(err);
+                      }
+                         
+                          
+                             
+                   };
+
+
+
+
+
+                   if(type === 'group'){
+
+                         add_group_icon.classList.remove('hide');
+                         threeDot_icon.classList.remove("hide");
+                          profile_name.innerText ='';
+                          profile_details_name.innerText = '';
+                          show_group_members.innerText = '';
+                           groupId=clickId ;
+                           try{
+                               const result = await backendCall("GET",'/groupChat',{query:{id:`${clickId}`}});
+
+
+
+                               if(result.success){
+                                    
+                                 showAllMessages.innerText='';
+                                 profile_name.innerText = result?.groupDetails?.groupName;
+                                  nav_profile_img.src=result?.groupDetails?.groupImg;
+
+                                  showAllMessages.innerText='';
+                                   showGroupMessages(result?.oldChats);
+                               }else{
+                                  alert(result.message);
+                               }
+                               
+                           }catch(err){
+                               console.error(err);
+                           }
+                           
+                     
+                   }
        
-         //sare users ko backend se lao -->
-                    fetchUsers();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+   } 
+
+
+ async function  showGroupEditFunction (groupId){
+               show(group_edit_container);
+          try{
+                 const result = await backendCall("GET",'/groupChat',{query:{id:`${groupId}`}});
+
+                 if(result.success){
+                  
+                              showEditContainer(result);
+                 }else{
+                   alert(result.message);
+                 }
+                  
+
+            }catch(err){
+                 console.error(err); 
+            }
+ }
+
+      //  nav bar - three dot icon  
+     threeDot_icon.addEventListener("click",async()=>{
+                             
+            if(currentType !== 'group' || !groupId){
+                   return;
+            }
+             
+              showGroupEditFunction(groupId);
+                           
+                        })
+                           
+
+//    users ko group me add krne ke liye show kro --->
+      async function showForAddInGroup(){
+
+        try{
+               const result = await backendCall("GET",'/addUsers',{query:{groupId:groupId}});
+                console.log(result);
+               if(result.success){
+
+                  add_user_lists.innerText = '';
+           const newFragment = document.createDocumentFragment();
+
+
+                 if(result.users.length === 0){
+                       const createDiv = document.createElement("div");
+                           createDiv.innerText = "All User Already Added . No User Left !!";
+                           createDiv.style.color = "white"
+                           createDiv.style.fontSize = "1.5rem"
+                           newFragment.appendChild(createDiv);
+                 }
+
+              result.users.forEach(element =>{
+                  const parentDiv = document.createElement("div");
+                      const mainDiv = document.createElement("div");
+                       const add_btn = document.createElement("button");
+
+                       
+                       add_btn.innerText = 'Add';
+                        add_btn.className = 'add_user_btn';
+                        add_btn.dataset.id = element._id;
+
+                       mainDiv.innerText=element.fullName;
+                       mainDiv.classList = 'add_user';
+
+                       parentDiv.classList ='parent_add_user';
+                       parentDiv.append(mainDiv,add_btn);
+
+                       newFragment.appendChild(parentDiv);
+                      
+                       
+              });
+              add_user_lists.appendChild(newFragment);
+               }else{
+                  alert(result.message);
+               }
+            
+
+
+        }catch(err){
+           console.error(err);
+        }
+            
+       }
+
+add_user_lists.addEventListener("click",async(e)=>{
+        
+  try{
+       const btn = e.target.closest(".add_user_btn");
+          
+          if(!btn){
+             return;
+          }
+
+          const id = btn.dataset.id;
+             
+          const res = await backendCall("POST", '/addMember', {
+              query: { gId: groupId, id }
+           });
+
+           if(res.success){
+              showForAddInGroup();
+           }else{
+               alert(res.message);
+           }
+          }catch(err){
+              console.error(err);
+          }
 });
 
-function appendTheusers(data)
-{     
-   showUsersAddGroup.innerHTML ='';
-      data.forEach(user => {
-           //element create kro 
-           const p = document.createElement('p');
-           p.id = user._id ;
-           p.className = 'user'
-           p.innerText = user.fullName ;
-           const button = document.createElement("button");
-            button.innerText = "Add" ;
-            button.className = 'add-btn';
-            button.id = user._id;
 
-        showUsersAddGroup.append(p,button);
-        button.addEventListener('click',(event)=>{
-             const id = event.target.id;
 
-             //ab backend me add member wale ko call kr do 
+   function myProfileFunction(res){
+           
+           myProfile_name.innerText='';
+           myProfile_email.innerText =''
+           myProfile_img.src ="";
+           myProfile_groups.innerText='';
 
-                addthisMemeber(id);
-        })
+            myProfile_delete.id=res.data._id;
+            myProfile_name.innerText=res.data.fullName;
+            myProfile_email.innerText=res.data.email;
+            myProfile_img.src = res.data.profileUrl;
+            const newFragment = document.createDocumentFragment();
+            res.data.joinedgroup.forEach(element =>{
+                      const mainDiv = document.createElement("div");
+                          mainDiv.innerText = element.groupName;
+                           mainDiv.className = 'profile-groups' 
+                    newFragment.appendChild(mainDiv)
+            })
+           myProfile_groups.appendChild(newFragment);
+     }  
 
-      })
-}
- 
-async function addthisMemeber(id){
-      try{
-        
-              const response = await fetch(`http://localhost:5000/api/v1/addMember?gId=${groupId}&id=${id}`,{
-                  method:'POST',
-                  credentials:"include",
-                      headers:{
-                        'Content-Type':'application/json'
-                      }
-              });
 
-              const result = await response.json();
-                  
-              if(result.success)
-              {
-                 
-                    fetchUsers();
-              }else{
-                  alert(result.message);
-              }
-      }catch(err){
-        console.error(err.message);
+   // nav-bar three dot icon
+   
+
+     
+     hide_edit_container.addEventListener("click",()=>{
+            hide(group_edit_container);
+     })
+    
+     show_profile_edit.addEventListener("click",()=>{
+          toggle(show_profile_options);
+     })
+     
+
+//      logOut from the site ->
+
+     log_Out.addEventListener("click",async()=>{
+           try{
+              const result = await backendCall("POST","/logout",{});
+                 if(result.success){
+                      
+                       sessionStorage.clear();
+                       window.location.href = 'index.html';
+                 }
+           }catch(err){
+              console.error(err)
+           }
+     });
+
+//      profile edit btn ->
+     profile_name_edit_btn.addEventListener("click",(e)=>{
+             e.preventDefault();  
+                     
+             
+             show(edit_name_form)
+              hide(profile_name_container)
+     })
+
+
+
+// edit group name form  ------>
+     edit_name_form.addEventListener("submit",async(e)=>{
+          e.preventDefault();
+           const inputValue = document.getElementById("edit_name_input");
+         const groupName = inputValue.value.trim();
+       
+         try{
+              const result = await backendCall("PATCH",'/updategroup',{data:{groupId:`${groupId}`,updateGroupName:groupName}});
+          
+           if(result.success){
+               showUsersAndGroup();
+               showMessageFunction(groupId,'group');
+               show(profile_name_container);
+                hide(edit_name_form)
+              
+           }else{
+             alert(result.message);
+           }
+           inputValue.value = '';
+         }catch(err){
+            console.error(err);
+         }
+         
+         
+     })
+
+
+
+     show_profile.addEventListener("click",async(e)=>{
+                 hide(main_section);
+                 hide(create_group_section);
+           try{
+            const mediaQuery = window.matchMedia("(max-width : 600px)");
+
+        function handleChange(e){
+         if(e.matches){
+           
+            hide(aside_section);
+             }
+             }
+
+         handleChange(mediaQuery);
+
+        mediaQuery.addEventListener("change",handleChange);
+
+                  show(profile_section);
+          
+           const res = await backendCall("GET",'/profile',{});
+
+           if(res.success){
+                 myProfileFunction(res);
+           }else{
+               alert(res.message);
+           }
+           
+
+           }catch(err){
+              console.error(err)
+           }
+          
+     });
+
+     my_profile_close.addEventListener("click",()=>{
+           hide(profile_section)
+
+            const mediaQuery = window.matchMedia("(max-width : 600px)");
+
+        function handleChange(e){
+         if(e.matches){
+           
+            show(aside_section);
+             }
+             }
+
+         handleChange(mediaQuery);
+
+        mediaQuery.addEventListener("change",handleChange);
+            
+     });
+
+     create_new_group.addEventListener("click",()=>{
+            show(create_group_section);
+            hide(main_section)
+            hide(profile_section); 
+            
+            const mediaQuery = window.matchMedia("(max-width : 600px)");
+
+   function handleChange(e){
+      if(e.matches){
+           show(create_group_section);
+            hide(main_section)
+            hide(profile_section); 
+            hide(aside_section);
       }
-}
+   }
+
+  handleChange(mediaQuery);
+
+  mediaQuery.addEventListener("change",handleChange);
+
+     });
+     
+     close_create_group_section.addEventListener("click",()=>{
+            hide(create_group_section);
+
+            const mediaQuery = window.matchMedia("(max-width : 600px)");
+
+        function handleChange(e){
+      if(e.matches){
+           hide(create_group_section);
+            hide(main_section)
+            hide(profile_section); 
+            show(aside_section);
+             }
+         }
+
+  handleChange(mediaQuery);
+
+  mediaQuery.addEventListener("change",handleChange);
+             
+     });
+
+     create_group_form.addEventListener("submit",async(e)=>{
+      e.preventDefault();
+        const tempStore = document.getElementById("group_name");             
+                 const newGroup = tempStore.value.trim();
+              tempStore.value = '';
+             try{
+             const result = await backendCall('POST','/group',{data:{groupName:newGroup}}) ;  
+                
+             if(result.success){
+
+                 socket.emit("join_group",result?.group?._id);
+
+                   showUsersAndGroup();
+             }else{
+                 alert(result.message);
+             }
+
+             }catch(err){
+              console.error(err);
+             }
+              
+     });
+
+     add_group_icon.addEventListener("click",()=>{
+         show(add_user_container);
+           showForAddInGroup();
+     })
+//my-profile-delete-Account -btn
+
+myProfile_delete.addEventListener("click",async()=>{
+     try{
+           const res = await backendCall("DELETE","/deleteAccount",{});
+          if(res.success){
+                       sessionStorage.clear();
+                       window.location.href = 'index.html';
+                 }else{
+                    alert(res.message);
+                 }
+     }catch(err){
+        console.error(err);
+     }
+          
+}) 
+
+leave_group.addEventListener("click",async(e)=>{
+      try{
+              const userDetails = sessionStorage.getItem("user");
+          const newuserId = JSON.parse(userDetails);
+         
+        const res = await backendCall("DELETE",'/leave/:groupId/:userId',{params:{groupId:groupId,userId:newuserId.id}});
+       if(res.success){
+             hide(main_section);
+             showUsersAndGroup();
+       }else{
+          alert(res.message);
+       }
+      }catch(err){
+         console.error(err);
+      }
+      
+});
+
+ delete_group_btn.addEventListener("click",async()=>{
+           try{
+           
+               const res = await backendCall("DELETE","/delete/:gpId",{params:{gpId:groupId}});
+               if(res.success){
+                    hide(main_section);
+                    showUsersAndGroup();
+               }else{
+                   alert(res.message);
+               }
+           }catch(err){
+             console.error(err);
+           }
+ })
+add_user_close_btn.addEventListener("click",()=>{
+        hide(add_user_container);
+})
+// message send ------>
+ send_message_form.addEventListener("submit",(e)=>{
+                           e.preventDefault();
+                             const message =   input_message.value.trim();
+                     
+         
+                 console.log("form submit hua");
+            sendMessageFunction(currentId,message,currentType);
+           
+                  input_message.value ='';          
+                        })  
+
+
+
+   side_bar_searchForm.addEventListener("submit",async(e)=>{
+         e.preventDefault();
+
+           const searchInput = document.getElementById("side-bar-search-input");
+           
+          
+              const userName = searchInput.value.trim();
+              if(userName === ""){
+               return;
+                         };
+
+                const userDetails = sessionStorage.getItem("user");
+          const newuserId = JSON.parse(userDetails);
+              try{
+
+                  
+                  const result = await backendCall("GET",'/searchProfile/:userName',{params:{userName:userName}});
+                  
+
+                  if(result.success)  {
+                     const searchUser = result?.data.user.filter(elem =>{ return elem._id !== newuserId.id} )
+                     allUserAndGroups.innerText=''; 
+                     addIntoDocuments(result?.data?.group,searchUser);
+                  }else{
+                      alert(result.message);
+                  }
+               
+                 
+
+              }catch(err){
+                   console.error(err);
+              }
+
+   });
+
+close_tab.addEventListener("click",()=>{
+      hide(main_section);
+
+      const mediaQuery = window.matchMedia("(max-width : 600px)");
+
+   function handleChange(e){
+      if(e.matches){
+           hide(main_section);
+           show(aside_section);
+      }
+   }
+
+  handleChange(mediaQuery);
+
+  mediaQuery.addEventListener("change",handleChange);
+})
+
+ 
+
+
+});
+
+
+
+
 

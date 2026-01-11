@@ -44,11 +44,27 @@ exports.signUp = async(req,res)=>{
             })
         };
      const hashPassword = await bcrypt.hash(password,10);
+       
+      let splitName = fullName.split(" ");
+        console.log(splitName);
+      let firstName = splitName[0];
+      let lastName = null;
+      if( splitName[1]){
+       lastName = splitName[1]; 
+    }else{
+        lastName=splitName[0][1];  
+    }
+
+      let imageUrl = `https://ui-avatars.com/api/?name=${firstName}+${lastName}`
+
         let newUser = new User({
             fullName,
             email,
-            password:hashPassword
+            password:hashPassword,
+            profileUrl:imageUrl
         });
+
+
 
         await newUser.save();
 
