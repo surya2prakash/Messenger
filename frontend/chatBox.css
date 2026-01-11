@@ -295,7 +295,7 @@ html{
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-right: 3rem;
+      margin-right: 2rem;
       gap: 2rem;
 }
 
@@ -980,6 +980,8 @@ cursor: pointer;
 
 
  .close-tab{
+        position: relative;
+       
          font-size: 2rem;
          color:red;
          cursor: pointer;
@@ -1099,6 +1101,12 @@ cursor: pointer;
     font-size: 0.9rem;
     flex-shrink: 0;
   }
+
+  .right-icons{
+      
+      margin-right: 1rem;
+      
+}
 
 }
       
