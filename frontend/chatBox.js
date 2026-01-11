@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded',()=>{
              async()=>{
                 try{
                    
-                      socket = io("http://localhost:5000",{
+                      socket = io("https://messenger-axhs.onrender.com",{
                          withCredentials:true
                     });
 
@@ -268,7 +268,7 @@ function  navOnlineStatus(){
            
         //   *** BACKEND API CALL ******* 
       async function backendCall(method,path,{data,params,query}){
-               const BASE_URL ="http://localhost:5000/api/v1" ;
+               const BASE_URL ="https://messenger-axhs.onrender.com/api/v1" ;
              let options = {
                     method:`${method}`,
                      credentials:"include",
