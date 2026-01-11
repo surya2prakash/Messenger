@@ -27,14 +27,14 @@ app.use(cookieparser());
 const server = http.createServer(app);
 
 app.use(cors({
-     origin:"vocal-melomakarona-a10f56.netlify.app",
+     origin:"projectmessenger.netlify.app",
      methods:["POST","GET","DELETE",'PATCH'],
      credentials:true
 }));
 
  const io  = new Server(server,{
       cors:{
-           origin:"vocal-melomakarona-a10f56.netlify.app",
+           origin:"projectmessenger.netlify.app",
            methods:["POST","GET"],
              credentials:true
       }
