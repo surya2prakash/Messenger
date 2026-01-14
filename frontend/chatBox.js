@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded',()=>{
            
         
 
-              const profile_name = document.querySelector(".profile-name");
+              let profile_name = document.querySelector(".profile-name");
               const profile_details_name = document.querySelector(".edit-name");
              
               const profile_name_container = document.querySelector(".edit-name-container")
