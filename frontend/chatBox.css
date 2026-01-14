@@ -1001,6 +1001,10 @@ cursor: pointer;
     overflow: hidden;
   }
 
+  .html{
+       font-size: 14px;
+  }
+
   
   .aside-section {
     width: 100%;
@@ -1114,6 +1118,10 @@ cursor: pointer;
        
      
       
+}
+
+.profile-name{
+        font-size: 12px;
 }
 
 }
