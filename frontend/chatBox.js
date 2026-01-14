@@ -709,8 +709,11 @@ show_group_members.addEventListener("click",async(e)=>{
                                  function handleChange(e){
                                  if(e.matches){
                                        let gProfileName =  result?.groupDetails?.groupName;
-                                        profile_name = gProfileName.slice(0,5);
-                                       
+                                       if(gProfileName.length > 5){
+                                        profile_name.innerText = gProfileName.slice(0,5);
+                                       }else{
+                                          profile_name.innerText = result?.groupDetails?.groupName;
+                                       }
                                           }else{
                                              profile_name.innerText = result?.groupDetails?.groupName;
                                           }
@@ -1041,10 +1044,11 @@ add_user_lists.addEventListener("click",async(e)=>{
              const result = await backendCall('POST','/group',{data:{groupName:newGroup}}) ;  
                 
              if(result.success){
-
+                   
                  socket.emit("join_group",result?.group?._id);
 
                    showUsersAndGroup();
+                   alert(result.message);
              }else{
                  alert(result.message);
              }

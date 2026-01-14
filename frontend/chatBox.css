@@ -536,6 +536,7 @@ html{
 .edit-name{
        font-size: 1.8rem;
        font-weight: 500;
+       color: white;
      
 }
 .btn-edit{
@@ -608,6 +609,8 @@ html{
 
 .groupMember{
        font-size: 1.2rem;
+       font-weight: 500;
+       color: white;
 
 }
 
