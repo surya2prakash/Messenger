@@ -933,7 +933,7 @@ add_user_lists.addEventListener("click",async(e)=>{
                hide(edit_name_form);
                show(profile_name_container);
                        
-               hide(hide_edit_container);
+              
                 
               
            }else{
