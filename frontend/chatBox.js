@@ -918,6 +918,11 @@ add_user_lists.addEventListener("click",async(e)=>{
           e.preventDefault();
            const inputValue = document.getElementById("edit_name_input");
          const groupName = inputValue.value.trim();
+
+         if(groupName.length > 10){
+               alert("Max 10 letter Name Allowed.");
+               return;
+         }
        
          try{
               const result = await backendCall("PATCH",'/updategroup',{data:{groupId:`${groupId}`,updateGroupName:groupName}});
@@ -925,8 +930,11 @@ add_user_lists.addEventListener("click",async(e)=>{
            if(result.success){
                showUsersAndGroup();
                showMessageFunction(groupId,'group');
+               hide(edit_name_form);
                show(profile_name_container);
-                hide(edit_name_form)
+                       
+               hide(hide_edit_container);
+                
               
            }else{
              alert(result.message);
@@ -1040,6 +1048,11 @@ add_user_lists.addEventListener("click",async(e)=>{
         const tempStore = document.getElementById("group_name");             
                  const newGroup = tempStore.value.trim();
               tempStore.value = '';
+
+                 if(newGroup.length > 10){
+                    alert("Max 10 Letter Group Name Allowed.");
+                    return;
+                 }
              try{
              const result = await backendCall('POST','/group',{data:{groupName:newGroup}}) ;  
                 
@@ -1139,7 +1152,7 @@ add_user_close_btn.addEventListener("click",()=>{
               if(userName === ""){
                return;
                          };
-
+                     searchInput.innerText = "";
                 const userDetails = sessionStorage.getItem("user");
           const newuserId = JSON.parse(userDetails);
               try{
