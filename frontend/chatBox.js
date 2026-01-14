@@ -704,7 +704,22 @@ show_group_members.addEventListener("click",async(e)=>{
                                if(result.success){
                                     
                                  showAllMessages.innerText='';
-                                 profile_name.innerText = result?.groupDetails?.groupName;
+                                   const mediaQuery = window.matchMedia("(max-width : 600px)");
+
+                                 function handleChange(e){
+                                 if(e.matches){
+                                       let gProfileName =  result?.groupDetails?.groupName;
+                                        profile_name = gProfileName.slice(0,5);
+                                       
+                                          }else{
+                                             profile_name.innerText = result?.groupDetails?.groupName;
+                                          }
+                                        }
+
+                                    handleChange(mediaQuery);
+
+                               mediaQuery.addEventListener("change",handleChange);
+                                 
                                   nav_profile_img.src=result?.groupDetails?.groupImg;
 
                                   showAllMessages.innerText='';
