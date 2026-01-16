@@ -11,6 +11,16 @@ document.addEventListener("DOMContentLoaded",()=>{
             const signup_form = document.querySelector(".signup-form");
             const login_form = document.querySelector(".login-form");
      
+            // ----------forget-password------------
+            const forget_btn = document.querySelector(".forget-password");
+            const forget_section = document.querySelector(".forget-password-section");
+            const forget_form = document.querySelector(".forget-email-form");
+            const forget_email = document.querySelector(".forget-email");
+            const forget_otp = document.querySelector(".otp-form");
+            const otp = document.querySelector(".forget-otp");
+            const set_newPass_form = document.querySelector(".set-new-password");
+            const forget_Password = document.querySelector(".forget-newPass");
+            const forget_ConfirmPassword = document.querySelector(".forget-confirmPass");
 
          // ************* FUNCTION TO HIDE AND SHOW SECTIONS AND LOADER***********  
       function show(show)
@@ -37,23 +47,44 @@ document.addEventListener("DOMContentLoaded",()=>{
           
        }
 
+
+       
+     
+
+
       // ******API CALL************
        
-      async function backendCall(method,path,{data}){
-          const url ="https://messenger-axhs.onrender.com/api/v1" ;
+      async function backendCall(method,path,{data=null,token=null}){
+           const url ="https://messenger-axhs.onrender.com/api/v1" ;
+         
 
-             let options =   {
+          
+           
+            
+
+             let headers ={
+             
+                      'Content-Type':'application/json',
+                     
+          } ;
+
+          if(token){
+              headers. Authorization =`Bearer ${token}`
+          }
+          
+           let options =   {
                    method:`${method}`,
                    credentials:"include",
-                   headers:{
-                      'Content-Type':'application/json'
-                   }
+                  headers
                   }
 
             if(data)
                {
+                  
                    options.body = JSON.stringify(data);
                };
+
+               
 
                let finalpath = path;
   
@@ -161,6 +192,131 @@ document.addEventListener("DOMContentLoaded",()=>{
          }
 
 
+
+    })
+
+    forget_btn.addEventListener("click",()=>{
+          forget_section.classList.remove("hide");
+          login_section.classList.add("hide");
+    });
+
+    forget_form.addEventListener("submit",async(e)=>{
+         e.preventDefault();
+
+         const forEmail = forget_email.value.trim();
+
+         if(forEmail === ""){
+              alert("Enter Your Email");
+              return;
+         }
+
+        const data={
+             email:forEmail
+         }
+        
+
+           try{
+                   showLoader();
+                  const result  = await backendCall('POST','/forgetpassword',{data});
+                  if(result.success)
+                  {
+                     
+                     sessionStorage.setItem("forgetPass",result?.data?.forgetToken);
+                  // if success then ->
+                     forget_otp.classList.remove("hide");
+                     forget_form.classList.add("hide");
+                     alert(result.message);
+                     
+                  }else{
+                     // if success:false then ->
+                     alert(result.message);
+                    
+                  }
+           }catch(err)
+           {
+              console.error(err.message);
+            
+           }   
+
+
+    });
+
+    forget_otp.addEventListener("submit",async(e)=>{
+          e.preventDefault();
+
+          const subOtp = otp.value.trim();
+
+          if(subOtp === ""){
+              alert("Enter Otp");
+              return;
+          }
+
+           const data={
+             otp:subOtp
+         }
+
+           try{
+                   showLoader();
+                   const token = sessionStorage.getItem("forgetPass");
+                  const result  = await backendCall('POST','/otp',{data,token});
+                  if(result.success)
+                  {
+                     alert(result.message);
+                  // if success then ->
+                     forget_otp.classList.add("hide");
+                     set_newPass_form.classList.remove("hide");
+                     
+                  }else{
+                     // if success:false then ->
+                     alert(result.message);
+                    
+                  }
+           }catch(err)
+           {
+              console.error(err.message);
+            
+           }   
+         
+    })
+
+    set_newPass_form.addEventListener("submit",async(e)=>{
+         e.preventDefault();
+        
+            const newPass = forget_Password.value.trim();
+            const confirmPass = forget_ConfirmPassword.value.trim();
+
+            if(newPass === "" || confirmPass ===""){
+                 alert("Enter New Password.")
+                 return;
+            }
+
+              const data={
+             password:newPass
+         }
+
+         const token = sessionStorage.getItem("forgetPass");
+
+           try{
+                   showLoader();
+                  const result  = await backendCall('POST','/setPassword',{data,token});
+                  if(result.success)
+                  {
+                     alert(result.message);
+                  // if success then ->
+                    sessionStorage.clear();
+                     forget_section.classList.add("hide");
+                      login_section.classList.remove("hide");
+                     
+                  }else{
+                     // if success:false then ->
+                     alert(result.message);
+                    
+                  }
+           }catch(err)
+           {
+              console.error(err.message);
+            
+           }   
 
     })
        

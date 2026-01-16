@@ -110,6 +110,7 @@ document.addEventListener('DOMContentLoaded',()=>{
                            token: token
                            }
                     });
+                  
 
                     if(socket === null)
                     {
@@ -275,7 +276,8 @@ function  navOnlineStatus(){
            
         //   *** BACKEND API CALL ******* 
       async function backendCall(method,path,{data,params,query}){
-               const BASE_URL ="https://messenger-axhs.onrender.com/api/v1" ;
+                const BASE_URL ="https://messenger-axhs.onrender.com/api/v1" ;
+              
              let options = {
                     method:`${method}`,
                      credentials:"include",
