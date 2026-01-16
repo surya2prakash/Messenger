@@ -4,12 +4,14 @@ const router = express.Router();
 
 const {signUp} = require("../Controller/User/signUp");
 const {logIn} = require("../Controller/User/logIn")
-const {auth,isAdmin} = require("../Middleware/auth");
+const {auth,isAdmin,forgetPassAuth} = require("../Middleware/auth");
 const {getAllUsers,adduseringroup,userByName,currentuseringroup,getUser} = require("../Controller/User/getUsers");
 const {getprivateChat} = require("../Controller/chats/oneToOne");
 const  {addMember,groupCreate,removeUser,updatetheGroupName} = require("../Controller/GroupController/groupCreate")
 const {getAllChats}= require("../Controller/GroupController/groupChats");
 const {deleteUserAccount,deleteGroup} = require("../Controller/User/deleteAccount");
+
+const {forgetPassword,verifyOtp,setNewPassword}= require("../Controller/User/forgetPassword");
 router.post("/login",logIn);
 router.post("/sign",signUp);
 
@@ -39,5 +41,9 @@ router.post("/logout",(req,res)=>{
              success:true,
              message:"Log-Out"
          })
-})
+});
+
+router.post("/otp",forgetPassAuth,verifyOtp);
+router.post("/forgetpassword",forgetPassword);
+router.post("/setPassword",forgetPassAuth,setNewPassword);
 module.exports = router;

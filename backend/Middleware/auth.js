@@ -75,3 +75,45 @@ exports.isAdmin = async(req,res,next) =>{
          })
       }
 }
+
+
+exports.forgetPassAuth = async(req,res,next) =>{
+      try{
+
+          const authHeader = req.headers["authorization"];
+          
+          console.log(authHeader);
+       
+        if(!authHeader)
+        {
+            return res.status(404).json({
+                success:false,
+                message:"token Missing.."
+            })
+        }
+        const token = authHeader.split(" ")[1];
+
+        if(!token)
+        {
+            return res.status(401).json({
+                success:false,
+                message:"Token Missing"
+            });
+        };
+
+
+            const payload =   jwt.verify(token,process.env.JWT_SECOND);
+              
+         req.forgetPass = payload;
+
+         next();
+
+              
+      }catch(err){
+        console.error(err);
+        return res.status(500).json({
+            success:false,
+            message:"Problem while forget Pass auth"
+         })
+      }
+}
