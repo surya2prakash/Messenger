@@ -144,6 +144,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                   if(result.success)
                   {
                   // if success then ->
+                      alert(result.message);
                       show(login_section);
                   }else{
                      // if success:false then ->
@@ -177,6 +178,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             if(result.success){
 
                  localStorage.setItem("token",result.data);
+                 alert(result.message)
                  window.location.href = 'chatBox.html'
              
             }else{
@@ -188,6 +190,7 @@ document.addEventListener("DOMContentLoaded",()=>{
          }catch(err){
             console.error(err);
       //if network error then ->
+            alert(result.message);
             show(login_section);
          }
 

@@ -842,6 +842,7 @@ add_user_lists.addEventListener("click",async(e)=>{
            });
 
            if(res.success){
+              alert(res.message);
               showForAddInGroup();
            }else{
                alert(res.message);
@@ -894,9 +895,10 @@ add_user_lists.addEventListener("click",async(e)=>{
            try{
               const result = await backendCall("POST","/logout",{});
                  if(result.success){
-                      
+                        
                        sessionStorage.clear();
                        localStorage.clear();
+                       alert(result.message);
                        window.location.href = 'index.html';
                  }
            }catch(err){
@@ -933,6 +935,7 @@ add_user_lists.addEventListener("click",async(e)=>{
                showUsersAndGroup();
                showMessageFunction(groupId,'group');
                hide(edit_name_form);
+               alert(result.message);
                show(profile_name_container);
                        
               
@@ -1103,6 +1106,7 @@ leave_group.addEventListener("click",async(e)=>{
         const res = await backendCall("DELETE",'/leave/:groupId/:userId',{params:{groupId:groupId,userId:newuserId.id}});
        if(res.success){
              hide(main_section);
+             alert(res.message);
              showUsersAndGroup();
        }else{
           alert(res.message);
@@ -1136,7 +1140,7 @@ add_user_close_btn.addEventListener("click",()=>{
                              const message =   input_message.value.trim();
                      
          
-                 console.log("form submit hua");
+                 
             sendMessageFunction(currentId,message,currentType);
            
                   input_message.value ='';          
